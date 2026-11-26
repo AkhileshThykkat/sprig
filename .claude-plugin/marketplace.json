@@ -1,0 +1,13 @@
+{
+  "name": "sprig",
+  "owner": {
+    "name": "AkhileshThykkat"
+  },
+  "plugins": [
+    {
+      "name": "sprig",
+      "source": "./integrations/claude-code",
+      "description": "A mascot that shows what Claude Code is doing"
+    }
+  ]
+}

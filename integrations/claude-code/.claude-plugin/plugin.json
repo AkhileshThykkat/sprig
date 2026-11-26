@@ -1,0 +1,10 @@
+{
+  "name": "sprig",
+  "version": "0.1.0",
+  "description": "A mascot that shows what Claude Code is doing (needs the sprig command: npm i -g sprig-mascot)",
+  "author": {
+    "name": "AkhileshThykkat"
+  },
+  "repository": "https://github.com/AkhileshThykkat/sprig",
+  "license": "MIT"
+}

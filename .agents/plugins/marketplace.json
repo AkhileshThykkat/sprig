@@ -1,0 +1,21 @@
+{
+  "name": "sprig",
+  "interface": {
+    "displayName": "sprig"
+  },
+  "plugins": [
+    {
+      "name": "sprig",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/AkhileshThykkat/sprig.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

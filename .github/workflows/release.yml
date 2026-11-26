@@ -1,0 +1,57 @@
+# Push a tag like v0.1.0 to build binaries, publish a GitHub release, and
+# publish the npm package (when the NPM_TOKEN secret is set).
+name: release
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { os: ubuntu-latest, target: linux-x64, flags: "-static" }
+          - { os: ubuntu-24.04-arm, target: linux-arm64, flags: "-static" }
+          - { os: macos-latest, target: darwin-universal, flags: "-arch arm64 -arch x86_64" }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: make build/sprig CXXFLAGS="-O2 ${{ matrix.flags }}"
+      - run: ./build/sprig emit idle && ./build/sprig help
+      - run: mkdir dist && cp build/sprig dist/sprig-${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sprig-${{ matrix.target }}
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release
+      id-token: write # npm provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - run: cp integrations/pi/sprig.ts dist/sprig-pi.ts
+      - run: cd dist && sha256sum sprig-* > SHA256SUMS && cat SHA256SUMS
+      - run: gh release create "$GITHUB_REF_NAME" dist/* --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then echo "NPM_TOKEN not set: skipping npm"; exit 0; fi
+          mkdir -p npm/bin
+          cp dist/sprig-linux-* dist/sprig-darwin-* npm/bin/
+          chmod +x npm/bin/*
+          npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
+          npm publish --provenance --access public

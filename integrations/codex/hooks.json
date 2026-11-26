@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sprig hook",
+            "command": "command -v sprig >/dev/null 2>&1 && sprig hook || true",
             "timeout": 5
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sprig hook",
+            "command": "command -v sprig >/dev/null 2>&1 && sprig hook || true",
             "timeout": 5
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sprig hook",
+            "command": "command -v sprig >/dev/null 2>&1 && sprig hook || true",
             "timeout": 5
           }
         ]
@@ -40,7 +40,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sprig hook",
+            "command": "command -v sprig >/dev/null 2>&1 && sprig hook || true",
             "timeout": 5
           }
         ]
@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sprig hook",
+            "command": "command -v sprig >/dev/null 2>&1 && sprig hook || true",
             "timeout": 5
           }
         ]

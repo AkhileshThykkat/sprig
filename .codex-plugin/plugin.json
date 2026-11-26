@@ -1,0 +1,28 @@
+{
+  "name": "sprig",
+  "version": "0.1.0",
+  "description": "A mascot that shows what Codex is doing (needs the sprig command).",
+  "author": {
+    "name": "AkhileshThykkat",
+    "url": "https://github.com/AkhileshThykkat"
+  },
+  "homepage": "https://github.com/AkhileshThykkat/sprig",
+  "repository": "https://github.com/AkhileshThykkat/sprig",
+  "license": "MIT",
+  "keywords": [
+    "mascot",
+    "terminal",
+    "status"
+  ],
+  "hooks": "./integrations/codex/hooks.json",
+  "interface": {
+    "displayName": "sprig",
+    "shortDescription": "A mascot that shows what your agent is doing",
+    "developerName": "AkhileshThykkat",
+    "category": "Productivity",
+    "capabilities": [
+      "Lifecycle hooks"
+    ],
+    "websiteURL": "https://github.com/AkhileshThykkat/sprig"
+  }
+}

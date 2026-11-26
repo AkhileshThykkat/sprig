@@ -39,6 +39,7 @@ web/sprig.wasm: core/sprig_wasm.cpp $(CORE) | build
 test: build/core_test build/sprig-asan web/sprig.wasm
 	./build/core_test
 	sh tests/cli_test.sh build/sprig-asan
+	sh tests/install_test.sh build/sprig
 	node tests/wasm_test.mjs
 
 install: build/sprig

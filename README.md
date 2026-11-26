@@ -12,13 +12,48 @@ anything that can run a shell command.
 
 ## Install
 
-Needs a C++20 compiler. Building the web module also needs `clang` and
-`wasm-ld` (from `lld`), but a built `web/sprig.wasm` is already checked in.
+**Terminal and agent users** (no Node needed):
 
 ```sh
-make            # build/sprig and web/sprig.wasm
-make test       # ASan + UBSan, end-to-end CLI, wasm checks
-make install    # copies sprig to ~/.local/bin (PREFIX=... to change)
+curl -fsSL https://raw.githubusercontent.com/AkhileshThykkat/sprig/main/install.sh | sh
+```
+
+It installs the `sprig` binary (checksum-verified), then finds Claude Code,
+Codex and pi on your machine and offers to connect each one. It asks you to
+choose between:
+
+- **its own folder** (default): everything lives in `~/.sprig` and is
+  symlinked into place, so removing it is one step;
+- **copy**: files go straight into `~/.local/bin` and your agents' folders.
+
+Options go after `sh -s --`: `--yes` (take the defaults), `--link`, `--copy`,
+`--agents-only`, `--uninstall`.
+
+**With npm** (also gets you the web component):
+
+```sh
+npm i -g sprig-mascot
+sprig setup        # connect Claude Code, Codex and pi
+```
+
+**One agent at a time:**
+
+| Agent | Command |
+|---|---|
+| Claude Code | `/plugin install sprig --marketplace AkhileshThykkat/sprig` |
+| Codex | `codex plugin marketplace add AkhileshThykkat/sprig && codex plugin add sprig@sprig` |
+| pi | `pi install npm:sprig-mascot` |
+| Anything else | `sprig emit busy` (or any mood below) |
+
+Plugins need the `sprig` command on your PATH. Hooks call `sprig hook`, which
+always exits 0 and prints nothing, so it can never block or change what your
+agent does. With no viewer running, every command returns at once.
+
+**From source:** needs a C++20 compiler; the web module also needs `clang`
+and `wasm-ld` (from `lld`), but a built `web/sprig.wasm` is checked in.
+
+```sh
+make && make test && make install
 ```
 
 ## Use it
@@ -30,18 +65,8 @@ sprig           # q or Ctrl-C quits
 sprig demo      # cycle through every mood
 ```
 
-Then connect your agent:
-
-| Agent | Setup |
-|---|---|
-| Claude Code | Merge [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) into `~/.claude/settings.json` |
-| Codex | Merge [`integrations/codex/hooks.json`](integrations/codex/hooks.json) into `~/.codex/hooks.json` |
-| pi | `cp integrations/pi/sprig.ts ~/.pi/agent/extensions/` |
-| Anything else | `sprig emit busy` (or any mood below) |
-
-Hooks call `sprig hook`, which always exits 0 and prints nothing, so it can
-never block or change what your agent does. With no viewer running, every
-command returns at once.
+Prebuilt binaries cover Linux (x86_64, arm64) and macOS (universal). On
+Windows, use WSL.
 
 | Mood | When | Look |
 |---|---|---|

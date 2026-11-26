@@ -1,0 +1,46 @@
+{
+  "name": "sprig-mascot",
+  "version": "0.1.0",
+  "description": "A tiny mascot for coding agents: one C++ engine for your terminal and the web (WebAssembly). Works with Claude Code, Codex, pi and anything else.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkhileshThykkat/sprig.git"
+  },
+  "homepage": "https://github.com/AkhileshThykkat/sprig#readme",
+  "keywords": [
+    "mascot",
+    "web-component",
+    "webassembly",
+    "terminal",
+    "claude-code",
+    "codex",
+    "pi-package",
+    "agent"
+  ],
+  "exports": {
+    ".": "./web/sprig.js",
+    "./sprig.wasm": "./web/sprig.wasm"
+  },
+  "browser": "./web/sprig.js",
+  "jsdelivr": "./web/sprig.js",
+  "unpkg": "./web/sprig.js",
+  "bin": {
+    "sprig": "npm/sprig.js"
+  },
+  "files": [
+    "web/sprig.js",
+    "web/sprig.wasm",
+    "npm/",
+    "integrations/pi/sprig.ts",
+    "README.md",
+    "LICENSE",
+    "install.sh"
+  ],
+  "pi": {
+    "extensions": [
+      "./integrations/pi/sprig.ts"
+    ]
+  }
+}
