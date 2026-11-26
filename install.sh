@@ -129,7 +129,8 @@ if have codex; then
     else say "Codex: could not install; run: codex plugin marketplace add $repo && codex plugin add sprig@sprig"; fi
   fi
 fi
-if have pi; then
+# By its config folder: `pi` is also the name of unrelated programs (a digits-of-pi tool).
+if [ -d "$(dirname "$pi_dir")" ]; then
   found=1
   if ask "Connect pi (adds an extension)?" y; then
     if [ -z "$pi_source" ]; then

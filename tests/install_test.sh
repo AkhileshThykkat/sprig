@@ -25,6 +25,7 @@ for agent in claude codex pi; do
   chmod +x "$dir/stubs/$agent"
 done
 
+mkdir -p "$dir/home/.pi/agent"  # pi is detected by this folder
 run() {
   env -i HOME="$dir/home" PATH="$dir/stubs:/usr/bin:/bin" SPRIG_BASE_URL="file://$dir/release" \
     sh "$root/install.sh" --yes "$@" < /dev/null
@@ -55,9 +56,15 @@ echo "// mine" > "$dir/home/.pi/agent/extensions/sprig.ts"
 run --copy > /dev/null
 grep -q "// mine" "$dir/home/.pi/agent/extensions/sprig.ts" || fail "overwrote a foreign pi extension"
 
+# No pi config folder: pi is left alone even if a `pi` command exists.
+rm -rf "$dir/home"
+run > /dev/null
+[ ! -e "$dir/home/.pi" ] || fail "set up pi without a pi config folder"
+
 # A tampered download is refused.
 echo tampered >> "$dir/release/$asset"
 rm -rf "$dir/home"
+mkdir -p "$dir/home/.pi/agent"
 if run > /dev/null 2>&1; then fail "installed a binary with a bad checksum"; fi
 [ ! -e "$dir/home/.local/bin/sprig" ] || fail "bad binary was placed"
 
