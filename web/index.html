@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sprig</title>
+  <style>
+    :root { color-scheme: light dark; --bg: #f8fafc; --fg: #0f172a; --muted: #64748b; --line: #e2e8f0; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #0b1120; --fg: #e2e8f0; --muted: #94a3b8; --line: #1e293b; } }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 48px 16px; text-align: center; }
+    sprig-mascot.hero { width: min(260px, 70vw); height: min(260px, 70vw); }
+    .moods { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 24px 0; }
+    button { font: inherit; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+             background: transparent; color: inherit; cursor: pointer; }
+    button[aria-pressed="true"] { border-color: currentColor; font-weight: 600; }
+    .row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 32px; }
+    .row sprig-mascot { width: 64px; height: 64px; }
+    p { color: var(--muted); }
+    code { font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <main>
+    <sprig-mascot class="hero" mood="idle"></sprig-mascot>
+    <div class="moods" role="group" aria-label="Mood"></div>
+    <p>One C++ engine, compiled to WebAssembly here and run natively in your terminal.
+      <br><code>&lt;sprig-mascot mood="busy"&gt;&lt;/sprig-mascot&gt;</code></p>
+    <div class="row" aria-label="Every mood at once"></div>
+  </main>
+  <script type="module">
+    import { MOODS } from "./sprig.js";
+    const hero = document.querySelector(".hero");
+    const group = document.querySelector(".moods");
+    for (const mood of MOODS) {
+      const button = Object.assign(document.createElement("button"), { textContent: mood });
+      button.setAttribute("aria-pressed", String(mood === hero.mood));
+      button.onclick = () => {
+        hero.mood = mood;
+        for (const b of group.children) b.setAttribute("aria-pressed", String(b === button));
+      };
+      group.append(button);
+      const small = document.createElement("sprig-mascot");
+      small.mood = mood;
+      small.title = mood;
+      document.querySelector(".row").append(small);
+    }
+  </script>
+</body>
+</html>
